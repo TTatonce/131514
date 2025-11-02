@@ -237,6 +237,23 @@
             box-shadow: 0 0 10px rgba(231, 76, 60, 0.5);
         }
         
+        /* 非成长性标签样式（只有1个等级） */
+        .non-growth {
+            background: linear-gradient(135deg, #7f8c8d 0%, #95a5a6 100%);
+            border: 1px dashed rgba(255, 255, 255, 0.3);
+            opacity: 0.8;
+        }
+        
+        .non-growth .tag-level {
+            background: rgba(0, 0, 0, 0.2);
+            color: #ecf0f1;
+        }
+        
+        .non-growth:hover {
+            opacity: 1;
+            transform: translateY(-3px);
+        }
+        
         /* 最高等级的特殊效果 */
         .max-level {
             position: relative;
@@ -281,6 +298,15 @@
             background: linear-gradient(90deg, #2ecc71, #f1c40f);
             border-radius: 2px;
             transition: width 0.5s ease;
+        }
+        
+        /* 非成长性标签的进度条样式 */
+        .non-growth .level-progress {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .non-growth .level-progress-bar {
+            background: linear-gradient(90deg, #bdc3c7, #7f8c8d);
         }
         
         .empty-state {
@@ -431,7 +457,8 @@
             </div>
             <div class="stats">
                 <div>总标签数: <span id="totalTags">0</span></div>
-                <div>最高等级标签: <span id="maxLevelTags">0</span></div>
+                <div>成长型标签: <span id="growthTags">0</span></div>
+                <div>非成长型标签: <span id="nonGrowthTags">0</span></div>
                 <div>平均等级: <span id="avgLevel">0</span></div>
             </div>
         </div>
@@ -441,7 +468,8 @@
             const tagsContainer = document.getElementById('tagsContainer');
             const emptyState = document.getElementById('emptyState');
             const totalTags = document.getElementById('totalTags');
-            const maxLevelTags = document.getElementById('maxLevelTags');
+            const growthTags = document.getElementById('growthTags');
+            const nonGrowthTags = document.getElementById('nonGrowthTags');
             const avgLevel = document.getElementById('avgLevel');
             const avatarContainer = document.getElementById('avatarContainer');
             const tagMeaningContainer = document.getElementById('tagMeaningContainer');
@@ -498,7 +526,8 @@
             function updateStats() {
                 totalTags.textContent = tags.length;
                 
-                let maxLevelCount = 0;
+                let growthCount = 0;
+                let nonGrowthCount = 0;
                 let totalCurrentLevel = 0;
                 let totalMaxLevel = 0;
                 
@@ -506,15 +535,18 @@
                     const currentLevel = tagLevels[tag] || 1;
                     const maxLevel = tagMaxLevels[tag] || 1;
                     
-                    if (currentLevel === maxLevel) {
-                        maxLevelCount++;
+                    if (maxLevel > 1) {
+                        growthCount++;
+                    } else {
+                        nonGrowthCount++;
                     }
                     
                     totalCurrentLevel += currentLevel;
                     totalMaxLevel += maxLevel;
                 });
                 
-                maxLevelTags.textContent = maxLevelCount;
+                growthTags.textContent = growthCount;
+                nonGrowthTags.textContent = nonGrowthCount;
                 avgLevel.textContent = tags.length > 0 ? (totalCurrentLevel / tags.length).toFixed(1) : '0';
             }
             
@@ -534,13 +566,21 @@
                         const currentLevel = tagLevels[tag] || 1;
                         const maxLevel = tagMaxLevels[tag] || 1;
                         
-                        // 设置等级样式
-                        const levelClass = getLevelColor(currentLevel, maxLevel);
-                        tagElement.classList.add(levelClass);
+                        // 判断是否为非成长性标签（只有1个等级）
+                        const isNonGrowth = maxLevel === 1;
                         
-                        // 如果是最高等级，添加特殊效果
-                        if (currentLevel === maxLevel && maxLevel > 1) {
-                            tagElement.classList.add('max-level');
+                        if (isNonGrowth) {
+                            // 非成长性标签样式
+                            tagElement.classList.add('non-growth');
+                        } else {
+                            // 成长性标签样式
+                            const levelClass = getLevelColor(currentLevel, maxLevel);
+                            tagElement.classList.add(levelClass);
+                            
+                            // 如果是最高等级，添加特殊效果
+                            if (currentLevel === maxLevel && maxLevel > 1) {
+                                tagElement.classList.add('max-level');
+                            }
                         }
                         
                         // 标签名称

@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>星穹六象标签系统</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+        
+        /* 动态背景 */
+        body {
+            background: linear-gradient(-45deg, #1a1a2e, #16213e, #0f3460, #2c3e50);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* 背景动画 */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50% }
+            50% { background-position: 100% 50% }
+            100% { background-position: 0% 50% }
+        }
+        
+        /* 浮动粒子效果 */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(100px) rotate(360deg); opacity: 0; }
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            background: rgba(44, 62, 80, 0.85);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 1;
+            margin: auto;
+        }
+        
+        header {
+            background: linear-gradient(90deg, rgba(52, 73, 94, 0.9) 0%, rgba(44, 62, 80, 0.9) 100%);
+            color: #e74c3c;
+            padding: 20px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e74c3c;
+            position: relative;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid #e74c3c;
+            box-shadow: 0 0 15px rgba(231, 76, 60, 0.4);
+            overflow: hidden;
+            background: #2c3e50;
+            position: relative;
+            transition: transform 0.3s;
+        }
+        
+        .avatar:hover {
+            transform: scale(1.05);
+        }
+        
+        .avatar::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #e74c3c, #3498db);
+            border-radius: 50%;
+            z-index: -1;
+        }
+        
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        
+        .avatar-placeholder {
+            color: #e74c3c;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+        
+        .title-section h1 {
+            font-size: 1.6rem;
+            margin-bottom: 5px;
+            text-shadow: 0 0 10px rgba(231, 76, 60, 0.4);
+            letter-spacing: 1px;
+        }
+        
+        .title-section p {
+            font-size: 0.8rem;
+            color: #ecf0f1;
+        }
+        
+        .main-content {
+            padding: 20px;
+            background: rgba(44, 62, 80, 0.7);
+        }
+        
+        .file-info {
+            margin-bottom: 15px;
+            padding: 12px;
+            background: rgba(52, 73, 94, 0.6);
+            border-radius: 8px;
+            font-size: 0.8rem;
+            color: #ecf0f1;
+            border-left: 3px solid #e74c3c;
+            transition: all 0.3s;
+        }
+        
+        .file-info:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .file-info h3 {
+            margin-bottom: 6px;
+            color: #e74c3c;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 15px;
+            justify-content: center;
+        }
+        
+        /* 标签样式 - 包含等级显示 */
+        .tag {
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.85rem;
+            animation: fadeIn 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            font-weight: 500;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            min-width: 100px;
+        }
+        
+        .tag::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .tag:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* 等级显示样式 */
+        .tag-level {
+            font-size: 0.7rem;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            margin-top: 2px;
+        }
+        
+        /* 不同等级的样式 */
+        .level-1 { background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); }
+        .level-2 { background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); }
+        .level-3 { background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%); }
+        .level-4 { background: linear-gradient(135deg, #f39c12 0%, #d35400 100%); }
+        .level-5 { 
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); 
+            box-shadow: 0 0 10px rgba(231, 76, 60, 0.5);
+        }
+        
+        /* 最高等级的特殊效果 */
+        .max-level {
+            position: relative;
+            overflow: visible;
+            border: 2px solid gold;
+            animation: glow 2s infinite alternate;
+        }
+        
+        .max-level::after {
+            content: '★';
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            color: gold;
+            font-size: 1rem;
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.8);
+            animation: sparkle 1.5s infinite;
+        }
+        
+        @keyframes glow {
+            from { box-shadow: 0 0 5px gold; }
+            to { box-shadow: 0 0 15px gold, 0 0 20px rgba(255, 215, 0, 0.5); }
+        }
+        
+        @keyframes sparkle {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.2) rotate(180deg); }
+        }
+        
+        /* 等级进度条 */
+        .level-progress {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 2px;
+        }
+        
+        .level-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #2ecc71, #f1c40f);
+            border-radius: 2px;
+            transition: width 0.5s ease;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 30px 20px;
+            color: #bdc3c7;
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            color: #3498db;
+        }
+        
+        .empty-state h3 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: #e74c3c;
+        }
+        
+        .empty-state p {
+            font-size: 0.85rem;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding: 12px;
+            background: rgba(52, 73, 94, 0.6);
+            border-radius: 8px;
+            font-size: 0.8rem;
+            color: #ecf0f1;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .stats:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .tag-category {
+            margin-top: 20px;
+        }
+        
+        .category-title {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            color: #e74c3c;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-shadow: 0 0 5px rgba(231, 76, 60, 0.3);
+            justify-content: center;
+        }
+        
+        .category-title i {
+            font-size: 1.2rem;
+        }
+        
+        .tag-meaning-container {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(52, 73, 94, 0.8);
+            border-radius: 8px;
+            border-left: 3px solid #e74c3c;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.5s;
+        }
+        
+        .tag-meaning-title {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            color: #e74c3c;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .tag-meaning-content {
+            color: #ecf0f1;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .accent-line {
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #e74c3c, transparent);
+            margin: 10px 0;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        
+        @media (max-width: 600px) {
+            header { flex-direction: column; gap: 12px; text-align: center; }
+            .header-left { flex-direction: column; }
+            .tag { min-width: 90px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 动态粒子背景 -->
+    <div class="particles" id="particles"></div>
+    
+    <div class="container">
+        <header>
+            <div class="header-left">
+                <div class="avatar" id="avatarContainer">
+                    <div class="avatar-placeholder">
+                        <i class="fas fa-tags"></i>
+                    </div>
+                </div>
+                <div class="title-section">
+                    <h1>星穹六象标签系统</h1>
+                    <p>等级修行之路</p>
+                </div>
+            </div>
+        </header>
+        <div class="main-content">
+            <div class="file-info">
+                <h3><i class="fas fa-file-alt"></i> 修行总结</h3>
+                <p>从0开始的等级修行之旅</p>
+            </div>
+            <div class="accent-line"></div>
+            <div class="tag-meaning-container" id="tagMeaningContainer">
+                <div class="tag-meaning-title">
+                    <i class="fas fa-info-circle"></i>
+                    <span id="tagMeaningTitle">标签含义</span>
+                </div>
+                <div class="tag-meaning-content" id="tagMeaningContent"></div>
+            </div>
+            <div class="tag-category">
+                <div class="category-title">
+                    <i class="fas fa-tags"></i>
+                    <span>所有标签</span>
+                </div>
+                <div class="tags-container" id="tagsContainer"></div>
+            </div>
+            <div class="empty-state" id="emptyState">
+                <i class="fas fa-cloud-moon"></i>
+                <h3>暂无标签</h3>
+                <p>请确保标签文件存在且格式正确</p>
+            </div>
+            <div class="stats">
+                <div>总标签数: <span id="totalTags">0</span></div>
+                <div>最高等级标签: <span id="maxLevelTags">0</span></div>
+                <div>平均等级: <span id="avgLevel">0</span></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tagsContainer = document.getElementById('tagsContainer');
+            const emptyState = document.getElementById('emptyState');
+            const totalTags = document.getElementById('totalTags');
+            const maxLevelTags = document.getElementById('maxLevelTags');
+            const avgLevel = document.getElementById('avgLevel');
+            const avatarContainer = document.getElementById('avatarContainer');
+            const tagMeaningContainer = document.getElementById('tagMeaningContainer');
+            const tagMeaningTitle = document.getElementById('tagMeaningTitle');
+            const tagMeaningContent = document.getElementById('tagMeaningContent');
+            const particlesContainer = document.getElementById('particles');
+            
+            // 创建动态粒子背景
+            function createParticles() {
+                for (let i = 0; i < 30; i++) {
+                    const particle = document.createElement('div');
+                    particle.classList.add('particle');
+                    
+                    // 随机大小
+                    const size = Math.random() * 20 + 5;
+                    particle.style.width = `${size}px`;
+                    particle.style.height = `${size}px`;
+                    
+                    // 随机位置
+                    particle.style.left = `${Math.random() * 100}vw`;
+                    particle.style.top = `${Math.random() * 100}vh`;
+                    
+                    // 随机动画延迟
+                    particle.style.animationDelay = `${Math.random() * 15}s`;
+                    
+                    particlesContainer.appendChild(particle);
+                }
+            }
+            
+            const colorPalettes = [
+                'linear-gradient(135deg, #2c3e50 0%, #34495e 100%)',
+                'linear-gradient(135deg, #3498db 0%, #2980b9 100%)',
+                'linear-gradient(135deg, #2ecc71 0%, #27ae60 100%)',
+                'linear-gradient(135deg, #f39c12 0%, #d35400 100%)',
+                'linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)',
+                'linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%)',
+                'linear-gradient(135deg, #1abc9c 0%, #16a085 100%)'
+            ];
+            
+            let tags = [];
+            let tagLevels = {};
+            let tagMaxLevels = {};
+            let tagMeanings = {};
+            
+            function getLevelColor(currentLevel, maxLevel) {
+                const levelRatio = currentLevel / maxLevel;
+                if (levelRatio >= 1) return 'level-5';
+                if (levelRatio >= 0.8) return 'level-4';
+                if (levelRatio >= 0.6) return 'level-3';
+                if (levelRatio >= 0.4) return 'level-2';
+                return 'level-1';
+            }
+            
+            function updateStats() {
+                totalTags.textContent = tags.length;
+                
+                let maxLevelCount = 0;
+                let totalCurrentLevel = 0;
+                let totalMaxLevel = 0;
+                
+                tags.forEach(tag => {
+                    const currentLevel = tagLevels[tag] || 1;
+                    const maxLevel = tagMaxLevels[tag] || 1;
+                    
+                    if (currentLevel === maxLevel) {
+                        maxLevelCount++;
+                    }
+                    
+                    totalCurrentLevel += currentLevel;
+                    totalMaxLevel += maxLevel;
+                });
+                
+                maxLevelTags.textContent = maxLevelCount;
+                avgLevel.textContent = tags.length > 0 ? (totalCurrentLevel / tags.length).toFixed(1) : '0';
+            }
+            
+            function displayTags() {
+                if (tags.length === 0) {
+                    tagsContainer.style.display = 'none';
+                    emptyState.style.display = 'block';
+                } else {
+                    tagsContainer.style.display = 'flex';
+                    emptyState.style.display = 'none';
+                    tagsContainer.innerHTML = '';
+                    
+                    tags.forEach(tag => {
+                        const tagElement = document.createElement('div');
+                        tagElement.className = 'tag';
+                        
+                        const currentLevel = tagLevels[tag] || 1;
+                        const maxLevel = tagMaxLevels[tag] || 1;
+                        
+                        // 设置等级样式
+                        const levelClass = getLevelColor(currentLevel, maxLevel);
+                        tagElement.classList.add(levelClass);
+                        
+                        // 如果是最高等级，添加特殊效果
+                        if (currentLevel === maxLevel && maxLevel > 1) {
+                            tagElement.classList.add('max-level');
+                        }
+                        
+                        // 标签名称
+                        const tagName = document.createElement('div');
+                        tagName.textContent = tag;
+                        tagName.className = 'tag-name';
+                        
+                        // 等级显示
+                        const levelDisplay = document.createElement('div');
+                        levelDisplay.textContent = `${currentLevel}/${maxLevel}`;
+                        levelDisplay.className = 'tag-level';
+                        
+                        // 进度条
+                        const progressContainer = document.createElement('div');
+                        progressContainer.className = 'level-progress';
+                        
+                        const progressBar = document.createElement('div');
+                        progressBar.className = 'level-progress-bar';
+                        progressBar.style.width = `${(currentLevel / maxLevel) * 100}%`;
+                        
+                        progressContainer.appendChild(progressBar);
+                        
+                        tagElement.appendChild(tagName);
+                        tagElement.appendChild(levelDisplay);
+                        tagElement.appendChild(progressContainer);
+                        
+                        tagElement.addEventListener('click', () => {
+                            showTagMeaning(tag, currentLevel, maxLevel);
+                        });
+                        
+                        tagsContainer.appendChild(tagElement);
+                    });
+                }
+                
+                updateStats();
+            }
+            
+            function showTagMeaning(tag, currentLevel, maxLevel) {
+                if (tagMeanings[tag]) {
+                    tagMeaningTitle.textContent = `${tag} (${currentLevel}/${maxLevel})`;
+                    tagMeaningContent.textContent = tagMeanings[tag];
+                    tagMeaningContainer.style.display = 'block';
+                } else {
+                    tagMeaningTitle.textContent = `${tag} (${currentLevel}/${maxLevel})`;
+                    tagMeaningContent.textContent = '该标签暂无详细解释';
+                    tagMeaningContainer.style.display = 'block';
+                }
+            }
+            
+            function loadAvatar() {
+                const img = document.createElement('img');
+                img.onload = function() {
+                    avatarContainer.innerHTML = '';
+                    avatarContainer.appendChild(img);
+                };
+                img.onerror = function() {
+                    avatarContainer.innerHTML = '<div class="avatar-placeholder"><i class="fas fa-tags"></i></div>';
+                };
+                img.src = '壁纸.jpg';
+            }
+            
+            function loadTagsFromFile() {
+                fetch('标签.txt')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('文件不存在或无法访问');
+                        }
+                        return response.text();
+                    })
+                    .then(data => {
+                        // 解析标签文件
+                        parseTagFile(data);
+                        displayTags();
+                        console.log('标签已从文件加载完成');
+                    })
+                    .catch(error => {
+                        console.error('加载标签文件失败:', error);
+                        // 如果文件加载失败，显示错误信息
+                        emptyState.innerHTML = `
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h3>加载失败</h3>
+                            <p>无法加载标签文件: ${error.message}</p>
+                            <p style="margin-top: 10px; font-size: 0.75rem;">请确保同级目录下存在"标签.txt"文件</p>
+                        `;
+                        emptyState.style.display = 'block';
+                        tagsContainer.style.display = 'none';
+                        tags = [];
+                        tagLevels = {};
+                        tagMaxLevels = {};
+                        tagMeanings = {};
+                        updateStats();
+                    });
+            }
+            
+            function parseTagFile(data) {
+                tags = [];
+                tagLevels = {};
+                tagMaxLevels = {};
+                tagMeanings = {};
+                
+                // 按行分割文件内容
+                const lines = data.split('\n').filter(line => line.trim() !== '');
+                
+                lines.forEach(line => {
+                    // 检查是否是标签定义行（包含冒号）
+                    if (line.includes('：') || line.includes(':')) {
+                        const separator = line.includes('：') ? '：' : ':';
+                        const parts = line.split(separator);
+                        
+                        if (parts.length >= 2) {
+                            const tagPart = parts[0].trim();
+                            const meaning = parts.slice(1).join(separator).trim();
+                            
+                            // 解析标签名称和等级
+                            const levelMatch = tagPart.match(/(.+)\s*\((\d+)\/(\d+)\)$/);
+                            
+                            if (levelMatch) {
+                                // 有等级信息的标签
+                                const tag = levelMatch[1].trim();
+                                const currentLevel = parseInt(levelMatch[2]);
+                                const maxLevel = parseInt(levelMatch[3]);
+                                
+                                tags.push(tag);
+                                tagLevels[tag] = currentLevel;
+                                tagMaxLevels[tag] = maxLevel;
+                                tagMeanings[tag] = meaning;
+                            } else {
+                                // 没有等级信息的标签，默认为1/1
+                                const tag = tagPart.trim();
+                                tags.push(tag);
+                                tagLevels[tag] = 1;
+                                tagMaxLevels[tag] = 1;
+                                tagMeanings[tag] = meaning;
+                            }
+                        }
+                    } else {
+                        // 如果没有冒号，则视为简单标签，默认为1/1
+                        const tag = line.trim();
+                        if (tag) {
+                            tags.push(tag);
+                            tagLevels[tag] = 1;
+                            tagMaxLevels[tag] = 1;
+                        }
+                    }
+                });
+            }
+            
+            // 初始化
+            createParticles();
+            loadAvatar();
+            loadTagsFromFile();
+        });
+    </script>
+</body>
+</html>

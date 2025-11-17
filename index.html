@@ -295,12 +295,27 @@
             box-shadow: 0 0 10px rgba(155, 89, 182, 0.5);
         }
         
-        /* 非成长性标签 - 正面样式 */
+        /* 非成长性标签 - 正面样式（与满级成长型标签一样美观） */
         .non-growth-positive {
-            background: linear-gradient(135deg, #1abc9c 0%, #16a085 100%);
+            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
             border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 2px 8px rgba(26, 188, 156, 0.3);
+            box-shadow: 0 0 10px rgba(155, 89, 182, 0.5);
             opacity: 1;
+            position: relative;
+            overflow: visible;
+            border: 2px solid gold;
+            animation: glow 2s infinite alternate;
+        }
+        
+        .non-growth-positive::after {
+            content: '★';
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            color: gold;
+            font-size: 1rem;
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.8);
+            animation: sparkle 1.5s infinite;
         }
         
         .non-growth-positive .tag-level {
@@ -311,7 +326,7 @@
         .non-growth-positive:hover {
             opacity: 0.95;
             transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(26, 188, 156, 0.4);
+            box-shadow: 0 6px 12px rgba(155, 89, 182, 0.6);
         }
         
         /* 非成长性标签 - 负面样式 */
@@ -384,7 +399,7 @@
         }
         
         .non-growth-positive .level-progress-bar {
-            background: linear-gradient(90deg, #1abc9c, #16a085);
+            background: linear-gradient(90deg, #9b59b6, #8e44ad);
         }
         
         .non-growth-negative .level-progress {
@@ -661,7 +676,7 @@
                                 tagElement.classList.add('max-level');
                             }
                         } else if (tagType === 'non-growth-positive') {
-                            // 正面非成长性标签样式
+                            // 正面非成长性标签样式（与满级成长型标签一样美观）
                             tagElement.classList.add('non-growth-positive');
                         } else if (tagType === 'non-growth-negative') {
                             // 负面非成长性标签样式
@@ -673,13 +688,9 @@
                         tagName.textContent = tag;
                         tagName.className = 'tag-name';
                         
-                        // 等级显示
+                        // 等级显示 - 非成长型标签也显示为1/1
                         const levelDisplay = document.createElement('div');
-                        if (tagType === 'growth') {
-                            levelDisplay.textContent = `${currentLevel}/${maxLevel}`;
-                        } else {
-                            levelDisplay.textContent = "固定";
-                        }
+                        levelDisplay.textContent = `${currentLevel}/${maxLevel}`;
                         levelDisplay.className = 'tag-level';
                         
                         // 进度条
@@ -688,12 +699,7 @@
                         
                         const progressBar = document.createElement('div');
                         progressBar.className = 'level-progress-bar';
-                        
-                        if (tagType === 'growth') {
-                            progressBar.style.width = `${(currentLevel / maxLevel) * 100}%`;
-                        } else {
-                            progressBar.style.width = `100%`;
-                        }
+                        progressBar.style.width = `${(currentLevel / maxLevel) * 100}%`;
                         
                         progressContainer.appendChild(progressBar);
                         
@@ -702,11 +708,7 @@
                         tagElement.appendChild(progressContainer);
                         
                         tagElement.addEventListener('click', () => {
-                            if (tagType === 'growth') {
-                                showTagMeaning(tag, currentLevel, maxLevel);
-                            } else {
-                                showTagMeaning(tag, "固定", "固定");
-                            }
+                            showTagMeaning(tag, currentLevel, maxLevel);
                         });
                         
                         tagsContainer.appendChild(tagElement);

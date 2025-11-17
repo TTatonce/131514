@@ -8,11 +8,9 @@
     <style>
         *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
         
-        /* 动态背景 */
+        /* 星空背景 */
         body {
-            background: linear-gradient(-45deg, #1a1a2e, #16213e, #0f3460, #2c3e50);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            background: #000;
             min-height: 100vh;
             padding: 20px;
             display: flex;
@@ -22,46 +20,102 @@
             overflow-x: hidden;
         }
         
-        /* 背景动画 */
-        @keyframes gradientBG {
-            0% { background-position: 0% 50% }
-            50% { background-position: 100% 50% }
-            100% { background-position: 0% 50% }
-        }
-        
-        /* 浮动粒子效果 */
-        .particles {
+        /* 星空背景层 */
+        .stars {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
+            z-index: -2;
         }
         
-        .particle {
+        .star {
             position: absolute;
+            background-color: #fff;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-            animation: float 15s infinite linear;
+            animation: twinkle 5s infinite ease-in-out;
         }
         
-        @keyframes float {
-            0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-100vh) translateX(100px) rotate(360deg); opacity: 0; }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+        
+        /* 黑洞效果 */
+        .black-hole {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #000 0%, #000 30%, #1a0033 70%, #330066 100%);
+            box-shadow: 0 0 100px rgba(102, 0, 204, 0.7);
+            z-index: -1;
+            animation: rotate 30s infinite linear;
+        }
+        
+        .black-hole::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #000 0%, #000 40%, #330033 70%, #660066 100%);
+            box-shadow: 0 0 80px rgba(153, 0, 255, 0.5);
+        }
+        
+        .black-hole::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #000 0%, #330033 30%, #660066 70%, #9900cc 100%);
+            box-shadow: 0 0 60px rgba(204, 0, 255, 0.8);
+        }
+        
+        @keyframes rotate {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        /* 星云效果 */
+        .nebula {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(75, 0, 130, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(139, 0, 139, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(72, 61, 139, 0.2) 0%, transparent 50%);
+            z-index: -1;
+            animation: nebulaShift 20s infinite alternate ease-in-out;
+        }
+        
+        @keyframes nebulaShift {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.7; }
         }
         
         .container {
             width: 100%;
             max-width: 1100px;
-            background: rgba(44, 62, 80, 0.85);
+            background: rgba(20, 20, 40, 0.85);
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(102, 0, 204, 0.3);
             backdrop-filter: blur(10px);
             position: relative;
             z-index: 1;
@@ -69,13 +123,13 @@
         }
         
         header {
-            background: linear-gradient(90deg, rgba(52, 73, 94, 0.9) 0%, rgba(44, 62, 80, 0.9) 100%);
-            color: #e74c3c;
+            background: linear-gradient(90deg, rgba(30, 30, 60, 0.9) 0%, rgba(20, 20, 40, 0.9) 100%);
+            color: #8a2be2;
             padding: 20px 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px solid #e74c3c;
+            border-bottom: 2px solid #8a2be2;
             position: relative;
         }
         
@@ -89,8 +143,8 @@
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            border: 2px solid #e74c3c;
-            box-shadow: 0 0 15px rgba(231, 76, 60, 0.4);
+            border: 2px solid #8a2be2;
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.4);
             overflow: hidden;
             background: #2c3e50;
             position: relative;
@@ -108,7 +162,7 @@
             left: -2px;
             right: -2px;
             bottom: -2px;
-            background: linear-gradient(45deg, #e74c3c, #3498db);
+            background: linear-gradient(45deg, #8a2be2, #4b0082);
             border-radius: 50%;
             z-index: -1;
         }
@@ -121,7 +175,7 @@
         }
         
         .avatar-placeholder {
-            color: #e74c3c;
+            color: #8a2be2;
             font-size: 20px;
             display: flex;
             align-items: center;
@@ -132,39 +186,39 @@
         .title-section h1 {
             font-size: 1.6rem;
             margin-bottom: 5px;
-            text-shadow: 0 0 10px rgba(231, 76, 60, 0.4);
+            text-shadow: 0 0 10px rgba(138, 43, 226, 0.4);
             letter-spacing: 1px;
         }
         
         .title-section p {
             font-size: 0.8rem;
-            color: #ecf0f1;
+            color: #d8bfd8;
         }
         
         .main-content {
             padding: 20px;
-            background: rgba(44, 62, 80, 0.7);
+            background: rgba(20, 20, 40, 0.7);
         }
         
         .file-info {
             margin-bottom: 15px;
             padding: 12px;
-            background: rgba(52, 73, 94, 0.6);
+            background: rgba(30, 30, 60, 0.6);
             border-radius: 8px;
             font-size: 0.8rem;
-            color: #ecf0f1;
-            border-left: 3px solid #e74c3c;
+            color: #d8bfd8;
+            border-left: 3px solid #8a2be2;
             transition: all 0.3s;
         }
         
         .file-info:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
         
         .file-info h3 {
             margin-bottom: 6px;
-            color: #e74c3c;
+            color: #8a2be2;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -214,7 +268,7 @@
         
         .tag:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
         }
         
         /* 等级显示样式 */
@@ -236,22 +290,46 @@
             background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); 
             box-shadow: 0 0 10px rgba(231, 76, 60, 0.5);
         }
-        
-        /* 非成长性标签样式（只有1个等级） */
-        .non-growth {
-            background: linear-gradient(135deg, #7f8c8d 0%, #95a5a6 100%);
-            border: 1px dashed rgba(255, 255, 255, 0.3);
-            opacity: 0.8;
+        .level-6 { 
+            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%); 
+            box-shadow: 0 0 10px rgba(155, 89, 182, 0.5);
         }
         
-        .non-growth .tag-level {
+        /* 非成长性标签 - 正面样式 */
+        .non-growth-positive {
+            background: linear-gradient(135deg, #1abc9c 0%, #16a085 100%);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 2px 8px rgba(26, 188, 156, 0.3);
+            opacity: 1;
+        }
+        
+        .non-growth-positive .tag-level {
             background: rgba(0, 0, 0, 0.2);
             color: #ecf0f1;
         }
         
-        .non-growth:hover {
-            opacity: 1;
+        .non-growth-positive:hover {
+            opacity: 0.95;
             transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(26, 188, 156, 0.4);
+        }
+        
+        /* 非成长性标签 - 负面样式 */
+        .non-growth-negative {
+            background: linear-gradient(135deg, #7f8c8d 0%, #636e72 100%);
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            opacity: 0.7;
+            filter: grayscale(0.3);
+        }
+        
+        .non-growth-negative .tag-level {
+            background: rgba(0, 0, 0, 0.2);
+            color: #bdc3c7;
+        }
+        
+        .non-growth-negative:hover {
+            opacity: 0.8;
+            transform: translateY(-2px);
         }
         
         /* 最高等级的特殊效果 */
@@ -301,12 +379,20 @@
         }
         
         /* 非成长性标签的进度条样式 */
-        .non-growth .level-progress {
+        .non-growth-positive .level-progress {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .non-growth-positive .level-progress-bar {
+            background: linear-gradient(90deg, #1abc9c, #16a085);
+        }
+        
+        .non-growth-negative .level-progress {
             background: rgba(255, 255, 255, 0.1);
         }
         
-        .non-growth .level-progress-bar {
-            background: linear-gradient(90deg, #bdc3c7, #7f8c8d);
+        .non-growth-negative .level-progress-bar {
+            background: linear-gradient(90deg, #7f8c8d, #636e72);
         }
         
         .empty-state {
@@ -318,13 +404,13 @@
         .empty-state i {
             font-size: 3rem;
             margin-bottom: 10px;
-            color: #3498db;
+            color: #8a2be2;
         }
         
         .empty-state h3 {
             font-size: 1.1rem;
             margin-bottom: 8px;
-            color: #e74c3c;
+            color: #8a2be2;
         }
         
         .empty-state p {
@@ -336,17 +422,17 @@
             justify-content: space-between;
             margin-top: 20px;
             padding: 12px;
-            background: rgba(52, 73, 94, 0.6);
+            background: rgba(30, 30, 60, 0.6);
             border-radius: 8px;
             font-size: 0.8rem;
-            color: #ecf0f1;
+            color: #d8bfd8;
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s;
         }
         
         .stats:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
         
         .tag-category {
@@ -356,11 +442,11 @@
         .category-title {
             font-size: 1rem;
             margin-bottom: 10px;
-            color: #e74c3c;
+            color: #8a2be2;
             display: flex;
             align-items: center;
             gap: 8px;
-            text-shadow: 0 0 5px rgba(231, 76, 60, 0.3);
+            text-shadow: 0 0 5px rgba(138, 43, 226, 0.3);
             justify-content: center;
         }
         
@@ -372,31 +458,31 @@
             display: none;
             margin-top: 20px;
             padding: 15px;
-            background: rgba(52, 73, 94, 0.8);
+            background: rgba(30, 30, 60, 0.8);
             border-radius: 8px;
-            border-left: 3px solid #e74c3c;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border-left: 3px solid #8a2be2;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             animation: fadeIn 0.5s;
         }
         
         .tag-meaning-title {
             font-size: 1rem;
             margin-bottom: 10px;
-            color: #e74c3c;
+            color: #8a2be2;
             display: flex;
             align-items: center;
             gap: 8px;
         }
         
         .tag-meaning-content {
-            color: #ecf0f1;
+            color: #d8bfd8;
             font-size: 0.9rem;
             line-height: 1.5;
         }
         
         .accent-line {
             height: 3px;
-            background: linear-gradient(90deg, transparent, #e74c3c, transparent);
+            background: linear-gradient(90deg, transparent, #8a2be2, transparent);
             margin: 10px 0;
         }
         
@@ -409,12 +495,21 @@
             header { flex-direction: column; gap: 12px; text-align: center; }
             .header-left { flex-direction: column; }
             .tag { min-width: 90px; }
+            .black-hole { width: 200px; height: 200px; }
+            .black-hole::before { width: 130px; height: 130px; }
+            .black-hole::after { width: 70px; height: 70px; }
         }
     </style>
 </head>
 <body>
-    <!-- 动态粒子背景 -->
-    <div class="particles" id="particles"></div>
+    <!-- 星空背景 -->
+    <div class="stars" id="stars"></div>
+    
+    <!-- 星云效果 -->
+    <div class="nebula"></div>
+    
+    <!-- 黑洞效果 -->
+    <div class="black-hole"></div>
     
     <div class="container">
         <header>
@@ -475,51 +570,43 @@
             const tagMeaningContainer = document.getElementById('tagMeaningContainer');
             const tagMeaningTitle = document.getElementById('tagMeaningTitle');
             const tagMeaningContent = document.getElementById('tagMeaningContent');
-            const particlesContainer = document.getElementById('particles');
+            const starsContainer = document.getElementById('stars');
             
-            // 创建动态粒子背景
-            function createParticles() {
-                for (let i = 0; i < 30; i++) {
-                    const particle = document.createElement('div');
-                    particle.classList.add('particle');
+            // 创建星空背景
+            function createStars() {
+                for (let i = 0; i < 200; i++) {
+                    const star = document.createElement('div');
+                    star.classList.add('star');
                     
                     // 随机大小
-                    const size = Math.random() * 20 + 5;
-                    particle.style.width = `${size}px`;
-                    particle.style.height = `${size}px`;
+                    const size = Math.random() * 2 + 1;
+                    star.style.width = `${size}px`;
+                    star.style.height = `${size}px`;
                     
                     // 随机位置
-                    particle.style.left = `${Math.random() * 100}vw`;
-                    particle.style.top = `${Math.random() * 100}vh`;
+                    star.style.left = `${Math.random() * 100}vw`;
+                    star.style.top = `${Math.random() * 100}vh`;
                     
                     // 随机动画延迟
-                    particle.style.animationDelay = `${Math.random() * 15}s`;
+                    star.style.animationDelay = `${Math.random() * 5}s`;
                     
-                    particlesContainer.appendChild(particle);
+                    starsContainer.appendChild(star);
                 }
             }
-            
-            const colorPalettes = [
-                'linear-gradient(135deg, #2c3e50 0%, #34495e 100%)',
-                'linear-gradient(135deg, #3498db 0%, #2980b9 100%)',
-                'linear-gradient(135deg, #2ecc71 0%, #27ae60 100%)',
-                'linear-gradient(135deg, #f39c12 0%, #d35400 100%)',
-                'linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)',
-                'linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%)',
-                'linear-gradient(135deg, #1abc9c 0%, #16a085 100%)'
-            ];
             
             let tags = [];
             let tagLevels = {};
             let tagMaxLevels = {};
             let tagMeanings = {};
+            let tagTypes = {};
             
             function getLevelColor(currentLevel, maxLevel) {
                 const levelRatio = currentLevel / maxLevel;
-                if (levelRatio >= 1) return 'level-5';
-                if (levelRatio >= 0.8) return 'level-4';
-                if (levelRatio >= 0.6) return 'level-3';
-                if (levelRatio >= 0.4) return 'level-2';
+                if (levelRatio >= 1) return 'level-6';
+                if (levelRatio >= 0.8) return 'level-5';
+                if (levelRatio >= 0.6) return 'level-4';
+                if (levelRatio >= 0.4) return 'level-3';
+                if (levelRatio >= 0.2) return 'level-2';
                 return 'level-1';
             }
             
@@ -532,22 +619,18 @@
                 let totalMaxLevel = 0;
                 
                 tags.forEach(tag => {
-                    const currentLevel = tagLevels[tag] || 1;
-                    const maxLevel = tagMaxLevels[tag] || 1;
-                    
-                    if (maxLevel > 1) {
+                    if (tagTypes[tag] === 'growth') {
                         growthCount++;
+                        totalCurrentLevel += tagLevels[tag] || 1;
+                        totalMaxLevel += tagMaxLevels[tag] || 1;
                     } else {
                         nonGrowthCount++;
                     }
-                    
-                    totalCurrentLevel += currentLevel;
-                    totalMaxLevel += maxLevel;
                 });
                 
                 growthTags.textContent = growthCount;
                 nonGrowthTags.textContent = nonGrowthCount;
-                avgLevel.textContent = tags.length > 0 ? (totalCurrentLevel / tags.length).toFixed(1) : '0';
+                avgLevel.textContent = growthCount > 0 ? (totalCurrentLevel / growthCount).toFixed(1) : '0';
             }
             
             function displayTags() {
@@ -563,16 +646,12 @@
                         const tagElement = document.createElement('div');
                         tagElement.className = 'tag';
                         
+                        const tagType = tagTypes[tag];
                         const currentLevel = tagLevels[tag] || 1;
                         const maxLevel = tagMaxLevels[tag] || 1;
                         
-                        // 判断是否为非成长性标签（只有1个等级）
-                        const isNonGrowth = maxLevel === 1;
-                        
-                        if (isNonGrowth) {
-                            // 非成长性标签样式
-                            tagElement.classList.add('non-growth');
-                        } else {
+                        // 判断标签类型
+                        if (tagType === 'growth') {
                             // 成长性标签样式
                             const levelClass = getLevelColor(currentLevel, maxLevel);
                             tagElement.classList.add(levelClass);
@@ -581,6 +660,12 @@
                             if (currentLevel === maxLevel && maxLevel > 1) {
                                 tagElement.classList.add('max-level');
                             }
+                        } else if (tagType === 'non-growth-positive') {
+                            // 正面非成长性标签样式
+                            tagElement.classList.add('non-growth-positive');
+                        } else if (tagType === 'non-growth-negative') {
+                            // 负面非成长性标签样式
+                            tagElement.classList.add('non-growth-negative');
                         }
                         
                         // 标签名称
@@ -590,7 +675,11 @@
                         
                         // 等级显示
                         const levelDisplay = document.createElement('div');
-                        levelDisplay.textContent = `${currentLevel}/${maxLevel}`;
+                        if (tagType === 'growth') {
+                            levelDisplay.textContent = `${currentLevel}/${maxLevel}`;
+                        } else {
+                            levelDisplay.textContent = "固定";
+                        }
                         levelDisplay.className = 'tag-level';
                         
                         // 进度条
@@ -599,7 +688,12 @@
                         
                         const progressBar = document.createElement('div');
                         progressBar.className = 'level-progress-bar';
-                        progressBar.style.width = `${(currentLevel / maxLevel) * 100}%`;
+                        
+                        if (tagType === 'growth') {
+                            progressBar.style.width = `${(currentLevel / maxLevel) * 100}%`;
+                        } else {
+                            progressBar.style.width = `100%`;
+                        }
                         
                         progressContainer.appendChild(progressBar);
                         
@@ -608,7 +702,11 @@
                         tagElement.appendChild(progressContainer);
                         
                         tagElement.addEventListener('click', () => {
-                            showTagMeaning(tag, currentLevel, maxLevel);
+                            if (tagType === 'growth') {
+                                showTagMeaning(tag, currentLevel, maxLevel);
+                            } else {
+                                showTagMeaning(tag, "固定", "固定");
+                            }
                         });
                         
                         tagsContainer.appendChild(tagElement);
@@ -671,6 +769,7 @@
                         tagLevels = {};
                         tagMaxLevels = {};
                         tagMeanings = {};
+                        tagTypes = {};
                         updateStats();
                     });
             }
@@ -680,6 +779,7 @@
                 tagLevels = {};
                 tagMaxLevels = {};
                 tagMeanings = {};
+                tagTypes = {};
                 
                 // 按行分割文件内容
                 const lines = data.split('\n').filter(line => line.trim() !== '');
@@ -694,12 +794,15 @@
                             const tagPart = parts[0].trim();
                             const meaning = parts.slice(1).join(separator).trim();
                             
-                            // 解析标签名称和等级
+                            // 解析标签名称和类型
+                            let tag, type;
+                            
+                            // 检查是否是成长型标签（包含等级信息）
                             const levelMatch = tagPart.match(/(.+)\s*\((\d+)\/(\d+)\)$/);
                             
                             if (levelMatch) {
-                                // 有等级信息的标签
-                                const tag = levelMatch[1].trim();
+                                // 有等级信息的标签 - 成长型
+                                tag = levelMatch[1].trim();
                                 const currentLevel = parseInt(levelMatch[2]);
                                 const maxLevel = parseInt(levelMatch[3]);
                                 
@@ -707,29 +810,36 @@
                                 tagLevels[tag] = currentLevel;
                                 tagMaxLevels[tag] = maxLevel;
                                 tagMeanings[tag] = meaning;
+                                tagTypes[tag] = 'growth';
                             } else {
-                                // 没有等级信息的标签，默认为1/1
-                                const tag = tagPart.trim();
+                                // 没有等级信息的标签
+                                tag = tagPart.trim();
+                                
+                                // 检查是否是正面或负面标签
+                                if (tag.includes('(正面)')) {
+                                    tag = tag.replace('(正面)', '').trim();
+                                    type = 'non-growth-positive';
+                                } else if (tag.includes('(负面)')) {
+                                    tag = tag.replace('(负面)', '').trim();
+                                    type = 'non-growth-negative';
+                                } else {
+                                    // 默认为正面非成长型标签
+                                    type = 'non-growth-positive';
+                                }
+                                
                                 tags.push(tag);
                                 tagLevels[tag] = 1;
                                 tagMaxLevels[tag] = 1;
                                 tagMeanings[tag] = meaning;
+                                tagTypes[tag] = type;
                             }
-                        }
-                    } else {
-                        // 如果没有冒号，则视为简单标签，默认为1/1
-                        const tag = line.trim();
-                        if (tag) {
-                            tags.push(tag);
-                            tagLevels[tag] = 1;
-                            tagMaxLevels[tag] = 1;
                         }
                     }
                 });
             }
-            
+
             // 初始化
-            createParticles();
+            createStars();
             loadAvatar();
             loadTagsFromFile();
         });
